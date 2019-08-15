@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<solver>
+
+	<solutionClass>com.workfront.planner.domain.Scenario</solutionClass>
+	<entityClass>com.workfront.planner.domain.Initiative</entityClass>
+
+	<scoreDirectorFactory>
+		<easyScoreCalculatorClass>com.workfront.solver.score.ScenarioEasyScoreCalculator</easyScoreCalculatorClass>
+		<initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+	</scoreDirectorFactory>
+
+	<termination>
+		<bestScoreLimit>0</bestScoreLimit>
+	</termination>
+
+</solver>
