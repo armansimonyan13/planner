@@ -21,11 +21,12 @@ public class Initiative {
 		this.name = name;
 	}
 
-	@PlanningVariable(valueRangeProviderRefs = {"dateRange"})
+	@PlanningVariable(valueRangeProviderRefs = {"timeUnitRange"})
 	public TimeUnit getStartTimeUnit() {
 		return startTimeUnit;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStartTimeUnit(TimeUnit startTimeUnit) {
 		this.startTimeUnit = startTimeUnit;
 	}

@@ -17,7 +17,7 @@ public class Scenario {
 
 	private SimpleScore score;
 
-	private static List<TimeUnit> dateList = TimeUnitGenerator.generate();
+	private static List<TimeUnit> timeUnitList = TimeUnitGenerator.generate();
 
 	@PlanningEntityCollectionProperty
 	public List<Initiative> getInitiativeList() {
@@ -28,10 +28,10 @@ public class Scenario {
 		this.initiativeList = initiativeList;
 	}
 
-	@ValueRangeProvider(id = "dateRange")
+	@ValueRangeProvider(id = "timeUnitRange")
 	@ProblemFactCollectionProperty
 	public List<TimeUnit> getDateList() {
-		return dateList;
+		return timeUnitList;
 	}
 
 	@PlanningScore
@@ -39,6 +39,7 @@ public class Scenario {
 		return score;
 	}
 
+	@SuppressWarnings("unused")
 	public void setScore(SimpleScore score) {
 		this.score = score;
 	}
