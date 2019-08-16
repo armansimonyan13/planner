@@ -5,7 +5,7 @@
 	<entityClass>com.workfront.planner.domain.Initiative</entityClass>
 
 	<scoreDirectorFactory>
-		<easyScoreCalculatorClass>com.workfront.solver.score.ScenarioEasyScoreCalculator</easyScoreCalculatorClass>
+		<easyScoreCalculatorClass>com.workfront.planner.solver.score.ScenarioEasyScoreCalculator</easyScoreCalculatorClass>
 		<initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
 	</scoreDirectorFactory>
 

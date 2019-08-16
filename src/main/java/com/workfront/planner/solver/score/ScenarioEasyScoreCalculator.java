@@ -1,4 +1,4 @@
-package com.workfront.solver.score;
+package com.workfront.planner.solver.score;
 
 import com.workfront.planner.domain.Initiative;
 import com.workfront.planner.domain.Scenario;
