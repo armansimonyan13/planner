@@ -9,7 +9,7 @@ public class Initiative {
 
 	private String name;
 
-	private StartDate startDate;
+	private TimeUnit startTimeUnit;
 
 	private int duration;
 
@@ -22,12 +22,12 @@ public class Initiative {
 	}
 
 	@PlanningVariable(valueRangeProviderRefs = {"dateRange"})
-	public StartDate getStartDate() {
-		return startDate;
+	public TimeUnit getStartTimeUnit() {
+		return startTimeUnit;
 	}
 
-	public void setStartDate(StartDate startDate) {
-		this.startDate = startDate;
+	public void setStartTimeUnit(TimeUnit startTimeUnit) {
+		this.startTimeUnit = startTimeUnit;
 	}
 
 	public int getDuration() {
@@ -40,7 +40,7 @@ public class Initiative {
 
 	@Override
 	public String toString() {
-		return "{name: " + name + ", startDate: " + startDate + ", duration: " + duration + "}";
+		return "{name: " + name + ", startTimeUnit: " + startTimeUnit + ", duration: " + duration + "}";
 	}
 
 }

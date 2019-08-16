@@ -2,7 +2,7 @@ package com.workfront.solver.score;
 
 import com.workfront.planner.domain.Initiative;
 import com.workfront.planner.domain.Scenario;
-import com.workfront.planner.domain.StartDate;
+import com.workfront.planner.domain.TimeUnit;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
@@ -15,7 +15,7 @@ public class ScenarioEasyScoreCalculator implements EasyScoreCalculator<Scenario
 	@Override
 	public Score calculateScore(Scenario scenario) {
 		List<Initiative> initiativeList = scenario.getInitiativeList();
-		List<StartDate> startDateList = scenario.getDateList();
+		List<TimeUnit> timeUnitList = scenario.getDateList();
 
 		int score = 0;
 
@@ -27,31 +27,31 @@ public class ScenarioEasyScoreCalculator implements EasyScoreCalculator<Scenario
 					continue;
 				}
 
-				if (initiative.getStartDate() != null && otherInitiative.getStartDate() != null) {
-					int startIndex = initiative.getStartDate().getIndex();
+				if (initiative.getStartTimeUnit() != null && otherInitiative.getStartTimeUnit() != null) {
+					int startIndex = initiative.getStartTimeUnit().getIndex();
 					int endIndex = startIndex + initiative.getDuration();
-					List<StartDate> initiativeStartDateList = new ArrayList<>();
+					List<TimeUnit> initiativeTimeUnitList = new ArrayList<>();
 					for (int z = startIndex; z < endIndex; z++) {
-						initiativeStartDateList.add(startDateList.get(z));
+						initiativeTimeUnitList.add(timeUnitList.get(z));
 					}
-					System.out.print("initiativeStartDateList: ");
-					System.out.println(initiativeStartDateList);
+					System.out.print("initiativeTimeUnitList: ");
+					System.out.println(initiativeTimeUnitList);
 
-					startIndex = otherInitiative.getStartDate().getIndex();
+					startIndex = otherInitiative.getStartTimeUnit().getIndex();
 					endIndex = startIndex + initiative.getDuration();
-					if (endIndex >= startDateList.size()) {
+					if (endIndex >= timeUnitList.size()) {
 						continue;
 					}
-					List<StartDate> otherInitiativeStartDateList = new ArrayList<>();
+					List<TimeUnit> otherInitiativeTimeUnitList = new ArrayList<>();
 					for (int z = startIndex; z < endIndex; z++) {
-						otherInitiativeStartDateList.add(startDateList.get(z));
+						otherInitiativeTimeUnitList.add(timeUnitList.get(z));
 					}
-					System.out.print("otherInitiativeStartDateList: ");
-					System.out.println(otherInitiativeStartDateList);
+					System.out.print("otherInitiativeTimeUnitList: ");
+					System.out.println(otherInitiativeTimeUnitList);
 
-					for (int x = 0; x < initiativeStartDateList.size(); x++) {
-						for (int y = 0; y < otherInitiativeStartDateList.size(); y++) {
-							if (initiativeStartDateList.get(x).equals(otherInitiativeStartDateList.get(y))) {
+					for (int x = 0; x < initiativeTimeUnitList.size(); x++) {
+						for (int y = 0; y < otherInitiativeTimeUnitList.size(); y++) {
+							if (initiativeTimeUnitList.get(x).equals(otherInitiativeTimeUnitList.get(y))) {
 								score--;
 							}
 						}

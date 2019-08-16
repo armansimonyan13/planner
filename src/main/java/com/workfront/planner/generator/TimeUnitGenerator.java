@@ -1,14 +1,14 @@
 package com.workfront.planner.generator;
 
-import com.workfront.planner.domain.StartDate;
+import com.workfront.planner.domain.TimeUnit;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class StartDateGenerator {
+public class TimeUnitGenerator {
 
-	public static List<StartDate> generate() {
-		StartDateGenerator generator = new StartDateGenerator();
+	public static List<TimeUnit> generate() {
+		TimeUnitGenerator generator = new TimeUnitGenerator();
 
 		return List.of(
 			generator.createStartDate(2019, 1, 1, 0),
@@ -26,13 +26,13 @@ public class StartDateGenerator {
 		);
 	}
 
-	private StartDate createStartDate(int year, int month, int dayOfMonth, int index) {
-		StartDate startDate = new StartDate();
-		startDate.setDate(
+	private TimeUnit createStartDate(int year, int month, int dayOfMonth, int index) {
+		TimeUnit timeUnit = new TimeUnit();
+		timeUnit.setDate(
 			LocalDate.of(year, month, dayOfMonth)
 		);
-		startDate.setIndex(index);
-		return startDate;
+		timeUnit.setIndex(index);
+		return timeUnit;
 	}
 
 }

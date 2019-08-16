@@ -1,6 +1,6 @@
 package com.workfront.planner.domain;
 
-import com.workfront.planner.generator.StartDateGenerator;
+import com.workfront.planner.generator.TimeUnitGenerator;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -17,7 +17,7 @@ public class Scenario {
 
 	private SimpleScore score;
 
-	private static List<StartDate> dateList = StartDateGenerator.generate();
+	private static List<TimeUnit> dateList = TimeUnitGenerator.generate();
 
 	@PlanningEntityCollectionProperty
 	public List<Initiative> getInitiativeList() {
@@ -30,7 +30,7 @@ public class Scenario {
 
 	@ValueRangeProvider(id = "dateRange")
 	@ProblemFactCollectionProperty
-	public List<StartDate> getDateList() {
+	public List<TimeUnit> getDateList() {
 		return dateList;
 	}
 

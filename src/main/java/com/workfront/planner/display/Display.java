@@ -13,7 +13,7 @@ public class Display {
 		for (int i = 0; i < initiativeList.size(); i++) {
 			Initiative initiative = initiativeList.get(i);
 			print(initiative.getName());
-			for (int offset = 0; offset < initiative.getStartDate().getDate().getMonthValue(); offset++) {
+			for (int offset = 0; offset < initiative.getStartTimeUnit().getDate().getMonthValue(); offset++) {
 				print(" ");
 			}
 			for (int d = 0; d < initiative.getDuration(); d++) {

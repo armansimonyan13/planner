@@ -2,7 +2,7 @@ package com.workfront.planner.domain;
 
 import java.time.LocalDate;
 
-public class StartDate {
+public class TimeUnit {
 
 	private LocalDate date;
 
