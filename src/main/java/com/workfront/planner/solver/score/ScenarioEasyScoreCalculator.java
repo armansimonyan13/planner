@@ -14,54 +14,61 @@ public class ScenarioEasyScoreCalculator implements EasyScoreCalculator<Scenario
 
 	@Override
 	public Score calculateScore(Scenario scenario) {
+		int score = 0;
+
 		List<Initiative> initiativeList = scenario.getInitiativeList();
 		List<TimeUnit> timeUnitList = scenario.getDateList();
 
-		int score = 0;
-
-		for (int i = 0; i < initiativeList.size(); i++) {
-			Initiative initiative = initiativeList.get(i);
-			for (int j = 0; j < initiativeList.size(); j++) {
-				Initiative otherInitiative = initiativeList.get(j);
+		for (Initiative initiative : initiativeList) {
+			for (Initiative otherInitiative : initiativeList) {
 				if (initiative == otherInitiative) {
 					continue;
 				}
 
 				if (initiative.getStartTimeUnit() != null && otherInitiative.getStartTimeUnit() != null) {
-					int startIndex = initiative.getStartTimeUnit().getIndex();
-					int endIndex = startIndex + initiative.getDuration();
-					List<TimeUnit> initiativeTimeUnitList = new ArrayList<>();
-					for (int z = startIndex; z < endIndex; z++) {
-						initiativeTimeUnitList.add(timeUnitList.get(z));
-					}
-					System.out.print("initiativeTimeUnitList: ");
-					System.out.println(initiativeTimeUnitList);
+					List<TimeUnit> initiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, initiative);
+					List<TimeUnit> otherInitiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, otherInitiative);
 
-					startIndex = otherInitiative.getStartTimeUnit().getIndex();
-					endIndex = startIndex + initiative.getDuration();
-					if (endIndex >= timeUnitList.size()) {
+					if (initiativeTimeUnitList == null || otherInitiativeTimeUnitList == null) {
 						continue;
 					}
-					List<TimeUnit> otherInitiativeTimeUnitList = new ArrayList<>();
-					for (int z = startIndex; z < endIndex; z++) {
-						otherInitiativeTimeUnitList.add(timeUnitList.get(z));
-					}
-					System.out.print("otherInitiativeTimeUnitList: ");
-					System.out.println(otherInitiativeTimeUnitList);
 
-					for (int x = 0; x < initiativeTimeUnitList.size(); x++) {
-						for (int y = 0; y < otherInitiativeTimeUnitList.size(); y++) {
-							if (initiativeTimeUnitList.get(x).equals(otherInitiativeTimeUnitList.get(y))) {
-								score--;
-							}
-						}
-					}
+//					System.out.println(initiativeTimeUnitList);
+//					System.out.println(otherInitiativeTimeUnitList);
+
+					score += getCollisionCount(initiativeTimeUnitList, otherInitiativeTimeUnitList);
 				}
 			}
 		}
 
-		System.out.println("Score: " + score);
+//		System.out.println(score);
+
 		return SimpleScore.of(score);
+	}
+
+	private int getCollisionCount(List<TimeUnit> initiativeTimeUnitList, List<TimeUnit> otherInitiativeTimeUnitList) {
+		int score = 0;
+		for (TimeUnit timeUnit : initiativeTimeUnitList) {
+			for (TimeUnit otherTimUnit : otherInitiativeTimeUnitList) {
+				if (timeUnit.equals(otherTimUnit)) {
+					score--;
+				}
+			}
+		}
+		return score;
+	}
+
+	private List<TimeUnit> getInitiativeTimeUnitList(List<TimeUnit> timeUnitList, Initiative initiative) {
+		List<TimeUnit> initiativeTimeUnitList = new ArrayList<>();
+		int startIndex = initiative.getStartTimeUnit().getIndex();
+		int endIndex = startIndex + initiative.getDuration();
+		if (endIndex >= timeUnitList.size()) {
+			return null;
+		}
+		for (int z = startIndex; z < endIndex; z++) {
+			initiativeTimeUnitList.add(timeUnitList.get(z));
+		}
+		return initiativeTimeUnitList;
 	}
 
 }
