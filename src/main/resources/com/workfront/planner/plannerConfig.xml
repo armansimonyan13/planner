@@ -5,12 +5,16 @@
 	<entityClass>com.workfront.planner.domain.Initiative</entityClass>
 
 	<scoreDirectorFactory>
-		<easyScoreCalculatorClass>com.workfront.planner.solver.score.ScenarioEasyScoreCalculator</easyScoreCalculatorClass>
-		<initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+<!--		<easyScoreCalculatorClass>com.workfront.planner.solver.score.ScenarioEasyScoreCalculator</easyScoreCalculatorClass>-->
+		<incrementalScoreCalculatorClass>com.workfront.planner.solver.score.ScenarioBasicIncrementalScoreCalculator</incrementalScoreCalculatorClass>
+
+<!--		<initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>-->
 	</scoreDirectorFactory>
 
 	<termination>
 		<bestScoreLimit>0</bestScoreLimit>
 	</termination>
+
+	<environmentMode>FULL_ASSERT</environmentMode>
 
 </solver>
