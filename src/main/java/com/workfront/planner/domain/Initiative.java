@@ -41,7 +41,7 @@ public class Initiative {
 
 	@Override
 	public String toString() {
-		return "{name: " + name + ", startTimeUnit: " + startTimeUnit + ", duration: " + duration + "}";
+		return "{ \"name\": \"" + name + "\", \"startTimeUnit\": " + startTimeUnit + ", \"duration\": " + duration + " }";
 	}
 
 }

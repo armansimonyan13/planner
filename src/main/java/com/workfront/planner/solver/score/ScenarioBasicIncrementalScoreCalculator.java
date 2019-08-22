@@ -3,14 +3,19 @@ package com.workfront.planner.solver.score;
 import com.workfront.planner.domain.Initiative;
 import com.workfront.planner.domain.Scenario;
 import com.workfront.planner.domain.TimeUnit;
+import com.workfront.planner.util.Util;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.core.impl.score.director.incremental.AbstractIncrementalScoreCalculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncrementalScoreCalculator<Scenario> {
+
+	private Logger logger = LoggerFactory.getLogger(ScenarioBasicIncrementalScoreCalculator.class);
 
 	private Scenario scenario;
 
@@ -20,6 +25,9 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 
 	@Override
 	public void resetWorkingSolution(Scenario scenario) {
+		logger.debug("============================================================");
+		logger.debug("resetWorkingSolution(" + scenario + ")");
+
 		this.scenario = scenario;
 		insertedInitiativeList = new ArrayList<>(scenario.getInitiativeList().size());
 		score = 0;
@@ -30,36 +38,50 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 
 	@Override
 	public void beforeEntityAdded(Object entity) {
+		logger.debug("beforeEntityAdded(" + entity + ")");
+
 		// Do nothing
 	}
 
 	@Override
 	public void afterEntityAdded(Object entity) {
+		logger.debug("afterEntityAdded(" + entity + ")");
+
 		insert((Initiative) entity);
 	}
 
 	@Override
 	public void beforeVariableChanged(Object entity, String variableName) {
+		logger.debug("beforeVariableChanged(" + entity + ", " + variableName + ")");
+
 		retract((Initiative) entity);
 	}
 
 	@Override
 	public void afterVariableChanged(Object entity, String variableName) {
+		logger.debug("afterVariableChanged(" + entity + ", " + variableName + ")");
+
 		insert((Initiative) entity);
 	}
 
 	@Override
 	public void beforeEntityRemoved(Object entity) {
+		logger.debug("beforeEntityRemoved(" + entity + ")");
+
 		retract((Initiative) entity);
 	}
 
 	@Override
 	public void afterEntityRemoved(Object entity) {
+		logger.debug("afterEntityRemoved(" + entity + ")");
+
 		// Do nothing
 	}
 
 	@Override
 	public Score calculateScore() {
+		logger.debug("calculateScore(), score: " + score);
+
 		return SimpleScore.of(score);
 	}
 
@@ -68,8 +90,8 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 		if (startTimeUnit != null) {
 			List<TimeUnit> timeUnitList = scenario.getDateList();
 			for (Initiative otherInitiative : insertedInitiativeList) {
-				List<TimeUnit> initiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, initiative);
-				List<TimeUnit> otherInitiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, otherInitiative);
+				List<TimeUnit> initiativeTimeUnitList = Util.getInitiativeTimeUnitList(timeUnitList, initiative);
+				List<TimeUnit> otherInitiativeTimeUnitList = Util.getInitiativeTimeUnitList(timeUnitList, otherInitiative);
 
 				if (initiativeTimeUnitList == null || otherInitiativeTimeUnitList == null) {
 					continue;
@@ -78,7 +100,7 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 				//					System.out.println(initiativeTimeUnitList);
 				//					System.out.println(otherInitiativeTimeUnitList);
 
-				score += getCollisionCount(initiativeTimeUnitList, otherInitiativeTimeUnitList);
+				score += Util.getCollisionCount(initiativeTimeUnitList, otherInitiativeTimeUnitList);
 			}
 			insertedInitiativeList.add(initiative);
 		}
@@ -90,8 +112,8 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 			insertedInitiativeList.remove(initiative);
 			List<TimeUnit> timeUnitList = scenario.getDateList();
 			for (Initiative otherInitiative : insertedInitiativeList) {
-				List<TimeUnit> initiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, initiative);
-				List<TimeUnit> otherInitiativeTimeUnitList = getInitiativeTimeUnitList(timeUnitList, otherInitiative);
+				List<TimeUnit> initiativeTimeUnitList = Util.getInitiativeTimeUnitList(timeUnitList, initiative);
+				List<TimeUnit> otherInitiativeTimeUnitList = Util.getInitiativeTimeUnitList(timeUnitList, otherInitiative);
 
 				if (initiativeTimeUnitList == null || otherInitiativeTimeUnitList == null) {
 					continue;
@@ -100,34 +122,9 @@ public class ScenarioBasicIncrementalScoreCalculator extends AbstractIncremental
 				//					System.out.println(initiativeTimeUnitList);
 				//					System.out.println(otherInitiativeTimeUnitList);
 
-				score -= getCollisionCount(initiativeTimeUnitList, otherInitiativeTimeUnitList);
+				score -= Util.getCollisionCount(initiativeTimeUnitList, otherInitiativeTimeUnitList);
 			}
 		}
-	}
-
-	private List<TimeUnit> getInitiativeTimeUnitList(List<TimeUnit> timeUnitList, Initiative initiative) {
-		List<TimeUnit> initiativeTimeUnitList = new ArrayList<>();
-		int startIndex = initiative.getStartTimeUnit().getIndex();
-		int endIndex = startIndex + initiative.getDuration();
-		if (endIndex >= timeUnitList.size()) {
-			return null;
-		}
-		for (int z = startIndex; z < endIndex; z++) {
-			initiativeTimeUnitList.add(timeUnitList.get(z));
-		}
-		return initiativeTimeUnitList;
-	}
-
-	private int getCollisionCount(List<TimeUnit> initiativeTimeUnitList, List<TimeUnit> otherInitiativeTimeUnitList) {
-		int score = 0;
-		for (TimeUnit timeUnit : initiativeTimeUnitList) {
-			for (TimeUnit otherTimUnit : otherInitiativeTimeUnitList) {
-				if (timeUnit.equals(otherTimUnit)) {
-					score--;
-				}
-			}
-		}
-		return score;
 	}
 
 }

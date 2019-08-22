@@ -26,7 +26,7 @@
 <!--	<logger name="org.optaplanner" level="${logback.level.org.optaplanner:-debug}"/>-->
 	<logger name="org.optaplanner" level="debug" />
 
-	<root level="warn">
+	<root level="debug">
 		<appender-ref ref="consoleAppender" />
 		<!--<appender-ref ref="fileAppender" />-->
 	</root>

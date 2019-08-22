@@ -26,7 +26,7 @@ public class TimeUnit {
 
 	@Override
 	public String toString() {
-		return "{index: " + index + ", date: " + date + "}";
+		return "{ \"index\": " + index + ", \"date\": " + date + " }";
 	}
 
 }

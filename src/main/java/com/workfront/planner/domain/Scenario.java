@@ -44,4 +44,9 @@ public class Scenario {
 		this.score = score;
 	}
 
+	@Override
+	public String toString() {
+		return "{ \"score\": " + score + ", \"initiativeList\": " + initiativeList + " }";
+	}
+
 }
